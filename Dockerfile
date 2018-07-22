@@ -5,11 +5,10 @@ FROM base/devel
 LABEL maintainer="Rohit Goswami (HaoZeke) <rohit.1995@mail.ru>"
 LABEL name="docuYoda"
 
-# Add archLinuFr
-RUN  echo -e "\n[archlinuxfr]\nSigLevel = Never\nServer = http://repo.archlinux.fr/\$arch" >> /etc/pacman.conf
-
-# Update apt and get build reqs along with the AUR packages
-RUN pacman-key --refresh-keys && \
+# Add archLinuFr and install all the packages (including AUR stuff)
+RUN  echo -e \ 
+"\n[archlinuxfr]\nSigLevel = Never\nServer = http://repo.archlinux.fr/\$arch" \
+>> /etc/pacman.conf && pacman-key --refresh-keys && \
 pacman-key -r 753E0F1F && pacman-key --lsign-key 753E0F1F && \
 pacman -Syy && echo | pacman --noconfirm -S python-pip texlive-most yarn tup pandoc \
 pandoc-citeproc sassc git biber openssh yaourt && \
