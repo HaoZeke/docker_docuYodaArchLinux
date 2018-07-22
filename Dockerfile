@@ -11,7 +11,7 @@ RUN  echo -e "\n[archlinuxfr]\nSigLevel = Never\nServer = http://repo.archlinux.
 # Update apt and get build reqs along with the AUR packages
 RUN pacman-key --refresh-keys && \
 pacman-key -r 753E0F1F && pacman-key --lsign-key 753E0F1F && \
-pacman -Syy && pacman --noconfirm -S python-pip texlive-most yarn tup pandoc \
+pacman -Syy && "all"|pacman --noconfirm -S python-pip texlive-most yarn tup pandoc \
 pandoc-citeproc sassc git biber openssh yaourt && \
 yaourt -S --noconfirm --noedit pp-git
 
