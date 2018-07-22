@@ -16,7 +16,7 @@ pandoc-citeproc sassc git biber openssh yaourt && \
 yaourt -S --noconfirm --noedit pp-git
 
 # Switch to the new user by default and make ~/ the working dir
-ENV USER zenyoda
+ENV USER docuyoda
 
 # Add the build user, update password to build and add to sudo group
 RUN useradd --create-home ${USER} && \
