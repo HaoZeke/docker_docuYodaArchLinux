@@ -9,7 +9,7 @@ LABEL name="docuYoda"
 RUN pacman-key --refresh-keys && pacman-key -r 753E0F1F && \
 pacman-key --lsign-key 753E0F1F && pacman -Syy && \
 echo | pacman --noconfirm -S python-pip texlive-most yarn tup pandoc \
-pandoc-citeproc pandoc-crossref sassc git biber openssh wget && \
+pandoc-citeproc pandoc-crossref sassc git biber openssh wget wine && \
 pip install --upgrade pip && pip install panflute && \
 pandoc-eqnos pandoc-fignos pandoc-xnos pandoc-tablenos
 
