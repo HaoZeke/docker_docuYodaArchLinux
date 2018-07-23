@@ -5,14 +5,13 @@ FROM base/devel
 LABEL maintainer="Rohit Goswami (HaoZeke) <rohit.1995@mail.ru>"
 LABEL name="docuYoda"
 
-# Add archLinuFr and install all the packages (including AUR stuff)
-RUN  echo -e \ 
-"\n[archlinuxfr]\nSigLevel = Never\nServer = http://repo.archlinux.fr/\$arch" \
->> /etc/pacman.conf && pacman-key --refresh-keys && \
-pacman-key -r 753E0F1F && pacman-key --lsign-key 753E0F1F && \
-pacman -Syy && echo | pacman --noconfirm -S python-pip texlive-most yarn tup pandoc \
-pandoc-citeproc sassc git biber openssh yaourt && \
-yaourt -S --noconfirm --noedit pp-git
+# Install non AUR packages and Python stuff
+RUN pacman-key --refresh-keys && pacman-key -r 753E0F1F && \
+pacman-key --lsign-key 753E0F1F && pacman -Syy && \
+echo | pacman --noconfirm -S python-pip texlive-most yarn tup pandoc \
+pandoc-citeproc sassc git biber openssh perl && \
+pip install panflute pandoc-eqnos pandoc-fignos \
+pandoc-xnos pandoc-tablenos
 
 # Switch to the new user by default and make ~/ the working dir
 ENV USER docuyoda
@@ -33,9 +32,10 @@ sudo -u ${USER} mkdir -p /home/${USER}/aur
 USER ${USER}
 WORKDIR /home/${USER}/
 
-# Extras
-RUN sudo pip install panflute pandoc-eqnos pandoc-fignos \
-pandoc-xnos pandoc-tablenos
+# Get Deps from AUR
+RUN git clone https://aur.archlinux.org/trizen.git && \
+cd trizen && yes | makepkg -si && \
+trizen -S --noedit --noconfirm pp-git
 
 # Setup dummy git config
 RUN git config --global user.name "${USER}" && \
